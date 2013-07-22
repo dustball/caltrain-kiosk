@@ -14,6 +14,8 @@ body {
 }
 
 html, body {height:100%; width:100%; overflow:hidden}
+.weather td {font-size:22px; width:100px}
+
 </style>
 
 </head>
@@ -46,6 +48,16 @@ html, body {height:100%; width:100%; overflow:hidden}
 
 <br/><br/>
 <!--<img src="sunshine.png" height=400>-->
+<table border=0 cellpadding=0 cellspacing=0 style="position:absolute; bottom:0; bottom:248px; right:48px; font-size:40px; float:right" class="weather">
+<tr>
+<td id=w0></td>
+<td id=w1></td>
+<td id=w2></td>
+<td id=w3></td>
+<td id=w4></td>
+</tr>
+</table>
+<br clear=all><br>
 <div style="bottom:0;margin-right:48px; font-size:40px; text-align:right" id=time>Time</div>
 
 <script type="text/javascript">
@@ -154,13 +166,29 @@ function redraw() {
   $("#time").html(window.time+"M");
   update("Northbound");
   update("Southbound");
+
+
+var query = escape('select item from weather.forecast where location="94043"'),
+    url = "http://query.yahooapis.com/v1/public/yql?q=" + query + "&format=json&callback=?"; 
+
+$.getJSON(url, function(data) {
+  for (var i=0; i<5; i++) {
+    var o = data.query.results.channel.item.forecast[i];
+    console.log( o );
+    var img = 'http://l.yimg.com/a/i/us/we/52/'+o.code+'.gif';
+    var h = "<center>"+o.day+"<br><img width=78 height=78 src='"+img+"'></center>";
+    $("#w"+i).html(h);
+  }
+
+});
+
 }
 
 
 $(document).ready(function() {
   
   redraw();
-  setInterval(redraw,10000);
+  setInterval(redraw,6*10000);
   
   
 });
