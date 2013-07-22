@@ -14,7 +14,7 @@ body {
 }
 
 html, body {height:100%; width:100%; overflow:hidden}
-.weather td {font-size:22px; width:100px; font-weight:bold}
+.weather td {font-size:28px; width:130px; font-weight:bold}
 
 </style>
 
@@ -48,7 +48,7 @@ html, body {height:100%; width:100%; overflow:hidden}
 
 <br/><br/>
 <!--<img src="sunshine.png" height=400>-->
-<table border=0 cellpadding=0 cellspacing=0 style="position:absolute; bottom:0; bottom:148px; right:48px; font-size:40px; float:right" class="weather">
+<table border=0 cellpadding=0 cellspacing=0 style="position:absolute; bottom:0; bottom:28px; right:28px; font-size:70px; float:right" class="weather">
 <tr>
 <td id=w0></td>
 <td id=w1></td>
@@ -163,7 +163,6 @@ function update(direction) {
 function redraw() {
   $("body").removeClass("arrival");
   window.time = gtime();
-  $("#time").html(window.time+"M");
   update("Northbound");
   update("Southbound");
 
@@ -173,12 +172,17 @@ var query = escape('select item from weather.forecast where location="94043"'),
 
 $.getJSON(url, function(data) {
   var f = data.query.results.channel.item.condition.temp;
-  $("#f").html(f+"&deg;F");
+  
+  $("#time").html("");
+  $("#f").html(window.time+"M - " +f+"&deg;F");
+
+
+
   for (var i=0; i<5; i++) {
     var o = data.query.results.channel.item.forecast[i];
     console.log( o );
     var img = 'http://l.yimg.com/a/i/us/we/52/'+o.code+'.gif';
-    var h = "<center>"+o.day+"<br><img width=78 height=78 src='"+img+"'><div style='font-size:14px; font-weight:bold'>"+o.low+"&deg; / "+o.high+"&deg;</div></center>";
+    var h = "<center>"+o.day+"<br><img width=104 height=104 src='"+img+"'><div style='font-size:20px;'>"+o.low+"&deg; / "+o.high+"&deg;</div></center>";
     $("#w"+i).html(h);
   }
 
